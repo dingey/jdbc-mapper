@@ -58,10 +58,14 @@ g配置为spring bean:
 用于大批量插入数据，可插入百万条数据到数据库，sqlSize通常应小于10000，如果实体类字段较多数据较大则相应减小sqlSize值防止插入失败，batchSize随意。
 
 #分页查询
-Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> t);
-Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t);
-Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)；
 执行分页查询
+#Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> t);
+执行sql分页查询
+#Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t);
+执行prepare sql分页查询
+#Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)；
+执行example分页查询
+分页
 Pager｛
 	List<T> list;
 	int pageNum;
@@ -69,6 +73,10 @@ Pager｛
 	long total;
 ｝
 #example查询
-List<T> selectByExample(Object e, Class<T> t); 根据example查询，与mybatis通用的example;
+与mybatis通用的example;
+#List<T> selectByExample(Object e, Class<T> t)
+根据example查询;
 long countByExample(Object e, Class<T> t);
+根据example查询汇总;
 void deleteByExample(Object e, Class<T> t);
+根据example删除查询;
