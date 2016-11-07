@@ -12,16 +12,20 @@ password=root
 initPoolSize=2
 maxPoolSize=10
 g配置为spring bean:
+<pre>
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
+</pre>
 多数据源可以通过不同的构造函数实现。
 JdbcMapper m=new JdbcMapper(String fileName);
 传人properties文件名，即可。
 g配置为spring bean:
+<pre>
 <bean id="oracle" class="com.di.jdbc.template.JdbcMapper">
 <constructor-arg>
 <value>oracle.properties</value>
 </constructor-arg>
 </bean>
+</pre>
 #方法介绍
 
 #boolean execute(String sql)
