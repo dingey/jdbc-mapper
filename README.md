@@ -76,7 +76,7 @@ Pager｛
 与mybatis通用的example;
 #List<T> selectByExample(Object e, Class<T> t)
 根据example查询;
-long countByExample(Object e, Class<T> t);
+#long countByExample(Object e, Class<T> t);
 根据example查询汇总;
-void deleteByExample(Object e, Class<T> t);
+#void deleteByExample(Object e, Class<T> t);
 根据example删除查询;
