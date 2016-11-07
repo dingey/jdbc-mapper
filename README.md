@@ -2,30 +2,30 @@
 基于jdbc的封装，自带连接池等。支持多数据源，配置简单，支持注解sql查询，自带分页查询。
 
 #快速开始
-JdbcMapper m=new JdbcMapper();
-默认加载classpath路径下的jdbc.properties文件。
-properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。
-driverClassName=com.mysql.jdbc.Driver
-url=jdbc:mysql://localhost:3306/test
-username=root
-password=root
-initPoolSize=2
-maxPoolSize=10
-g配置为spring bean:
-<pre>
+JdbcMapper m=new JdbcMapper();<br>
+默认加载classpath路径下的jdbc.properties文件。<br>
+properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。<br>
+driverClassName=com.mysql.jdbc.Driver<br>
+url=jdbc:mysql://localhost:3306/test<br>
+username=root<br>
+password=root<br>
+initPoolSize=2<br>
+maxPoolSize=10<br>
+g配置为spring bean:<br>
+```
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
-</pre>
+```
 多数据源可以通过不同的构造函数实现。
 JdbcMapper m=new JdbcMapper(String fileName);
 传人properties文件名，即可。
 g配置为spring bean:
-<pre>
+```
 <bean id="oracle" class="com.di.jdbc.template.JdbcMapper">
 <constructor-arg>
 <value>oracle.properties</value>
 </constructor-arg>
 </bean>
-</pre>
+```
 #方法介绍
 
 #boolean execute(String sql)
