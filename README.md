@@ -109,4 +109,4 @@ long countByExample(Object e, Class<T> t)
 ```
 void deleteByExample(Object e, Class<T> t)
 ```
-根据example删除查询;
+根据example删除;
