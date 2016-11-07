@@ -6,7 +6,7 @@ JdbcMapper m=new JdbcMapper();
 默认加载classpath路径下的jdbc.properties文件。
 properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。
 driverClassName=com.mysql.jdbc.Driver
-url=jdbc:mysql://localhost:3306/test?useUnicode=true&amp;characterEncoding=UTF-8&useSSL=true
+url=jdbc:mysql://localhost:3306/test
 username=root
 password=root
 initPoolSize=2
