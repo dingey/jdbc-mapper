@@ -11,7 +11,7 @@ username=root<br>
 password=root<br>
 initPoolSize=2<br>
 maxPoolSize=10<br>
-g配置为spring bean:<br>
+配置为spring bean:<br>
 ```
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
 ```
