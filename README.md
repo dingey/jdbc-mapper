@@ -90,6 +90,11 @@ List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> 
 ```
 执行本地命名查询
 ```
+@NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person"),
+		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
+public class Person {}
+```
+```
 Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)
 ```
 执行example分页查询<br/>
