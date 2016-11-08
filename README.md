@@ -38,7 +38,7 @@ boolean prepareExecute(String preSql, Object[] args)
 ```
 执行预编译的sql语句，args参数，返回成功或失败;
 ```
-#List<T> queryForList(String sql, Class<T> resultClass)
+List<T> queryForList(String sql, Class<T> resultClass)
 ```
 执行sql语句，返回多条记录为指定类型的pojo;
 ```
