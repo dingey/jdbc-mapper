@@ -17,10 +17,10 @@ maxPoolSize=10<br>
 ```
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
 ```
-多数据源可以通过不同的构造函数实现。
-JdbcMapper m=new JdbcMapper(String fileName);
-传人properties文件名，即可。
-g配置为spring bean:
+多数据源可以通过不同的构造函数实现。<br>
+JdbcMapper m=new JdbcMapper(String fileName);<br>
+传人properties文件名，即可。<br>
+配置为spring bean:<br>
 ```
 <bean id="oracle" class="com.di.jdbc.template.JdbcMapper">
 <constructor-arg>
