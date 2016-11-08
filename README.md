@@ -86,9 +86,13 @@ Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSi
 ```
 执行prepare sql分页查询
 ```
+List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> resultClass)
+```
+执行本地命名查询
+```
 Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)
 ```
-执行example分页查询
+执行example分页查询<br/>
 分页
 ```
 Pager｛
