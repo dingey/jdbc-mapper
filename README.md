@@ -5,12 +5,14 @@
 JdbcMapper m=new JdbcMapper();<br>
 默认加载classpath路径下的jdbc.properties文件。<br>
 properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。<br>
+```
 driverClassName=com.mysql.jdbc.Driver<br>
 url=jdbc:mysql://localhost:3306/test<br>
 username=root<br>
 password=root<br>
 initPoolSize=2<br>
 maxPoolSize=10<br>
+```
 配置为spring bean:<br>
 ```
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
