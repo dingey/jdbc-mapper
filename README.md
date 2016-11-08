@@ -78,15 +78,15 @@ void insertMillionObjects(List<T> os, int sqlSize, int batchSize)
 #分页查询
 执行分页查询
 ```
-Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> t)
+Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> resultClass)
 ```
 执行sql分页查询
 ```
-Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t)
+Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> resultClass)
 ```
 执行prepare sql分页查询
 ```
-List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> resultClass)
+Pager<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> resultClass)
 ```
 执行本地命名查询
 ```
@@ -95,7 +95,7 @@ List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> 
 public class Person {}
 ```
 ```
-Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)
+Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> resultClass)
 ```
 执行example分页查询<br/>
 分页
@@ -110,14 +110,14 @@ Pager｛
 #example查询
 与mybatis通用的example;
 ```
-List<T> selectByExample(Object e, Class<T> t)
+List<T> selectByExample(Object e, Class<T> resultClass)
 ```
 根据example查询;
 ```
-long countByExample(Object e, Class<T> t)
+long countByExample(Object e, Class<T> resultClass)
 ```
 根据example查询汇总;
 ```
-void deleteByExample(Object e, Class<T> t)
+void deleteByExample(Object e, Class<T> resultClass)
 ```
 根据example删除;
