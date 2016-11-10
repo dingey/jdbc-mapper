@@ -76,7 +76,7 @@ void insertMillionObjects(List<T> os, int sqlSize, int batchSize)
 用于大批量插入数据，可插入百万条数据到数据库，sqlSize通常应小于10000，如果实体类字段较多数据较大则相应减小sqlSize值防止插入失败，batchSize随意。
 
 #分页查询
-执行分页查询
+执行分页查询,只支持mysql,oracle。
 ```
 Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> resultClass)
 ```
