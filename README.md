@@ -5,20 +5,22 @@
 JdbcMapper m=new JdbcMapper();<br>
 默认加载classpath路径下的jdbc.properties文件。<br>
 properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。<br>
-driverClassName=com.mysql.jdbc.Driver<br>
-url=jdbc:mysql://localhost:3306/test<br>
-username=root<br>
-password=root<br>
-initPoolSize=2<br>
-maxPoolSize=10<br>
+```
+driverClassName=com.mysql.jdbc.Driver
+url=jdbc:mysql://localhost:3306/test
+username=root
+password=root
+initPoolSize=2
+maxPoolSize=10
+```
 配置为spring bean:<br>
 ```
 <bean id="jdbcMapper" class="com.di.jdbc.template.JdbcMapper"></bean>
 ```
-多数据源可以通过不同的构造函数实现。
-JdbcMapper m=new JdbcMapper(String fileName);
-传人properties文件名，即可。
-g配置为spring bean:
+多数据源可以通过不同的构造函数实现。<br>
+JdbcMapper m=new JdbcMapper(String fileName);<br>
+传人properties文件名，即可。<br>
+配置为spring bean:<br>
 ```
 <bean id="oracle" class="com.di.jdbc.template.JdbcMapper">
 <constructor-arg>
@@ -36,7 +38,7 @@ boolean prepareExecute(String preSql, Object[] args)
 ```
 执行预编译的sql语句，args参数，返回成功或失败;
 ```
-#List<T> queryForList(String sql, Class<T> resultClass)
+List<T> queryForList(String sql, Class<T> resultClass)
 ```
 执行sql语句，返回多条记录为指定类型的pojo;
 ```
@@ -74,19 +76,28 @@ void insertMillionObjects(List<T> os, int sqlSize, int batchSize)
 用于大批量插入数据，可插入百万条数据到数据库，sqlSize通常应小于10000，如果实体类字段较多数据较大则相应减小sqlSize值防止插入失败，batchSize随意。
 
 #分页查询
-执行分页查询
+执行分页查询,只支持mysql,oracle。
 ```
-Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> t)
+Pager<T> queryPager(String sql, int pageNum, int pageSize, Class<T> resultClass)
 ```
 执行sql分页查询
 ```
-Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t)
+Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> resultClass)
 ```
 执行prepare sql分页查询
 ```
-Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t)
+Pager<T> prepareNamedQueryPager(String namedQueryName, Object[] args, Class<T> resultClass)
 ```
-执行example分页查询
+执行本地命名查询
+```
+@NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person"),
+		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
+public class Person {}
+```
+```
+Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> resultClass)
+```
+执行example分页查询<br/>
 分页
 ```
 Pager｛
@@ -99,14 +110,14 @@ Pager｛
 #example查询
 与mybatis通用的example;
 ```
-List<T> selectByExample(Object e, Class<T> t)
+List<T> selectByExample(Object e, Class<T> resultClass)
 ```
 根据example查询;
 ```
-long countByExample(Object e, Class<T> t)
+long countByExample(Object e, Class<T> resultClass)
 ```
 根据example查询汇总;
 ```
-void deleteByExample(Object e, Class<T> t)
+void deleteByExample(Object e, Class<T> resultClass)
 ```
 根据example删除;
