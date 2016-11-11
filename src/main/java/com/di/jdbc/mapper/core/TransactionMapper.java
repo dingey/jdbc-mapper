@@ -42,7 +42,10 @@ public class TransactionMapper extends ObjectPagerMapper {
 	}
 
 	private Connection getCon() {
-		return con == null ? ConnectionUtil.getConn(getFileName()) : con;
+		if (con == null) {
+			con = ConnectionUtil.getConn(getFileName());
+		}
+		return con;
 	}
 
 	public void executeWithTransaction(String sql) throws SQLException {
