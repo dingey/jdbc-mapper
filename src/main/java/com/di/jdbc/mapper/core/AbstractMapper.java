@@ -9,15 +9,24 @@ public class AbstractMapper {
 	String fileName = "jdbc.properties";
 
 	public AbstractMapper() {
-		this.init(fileName);
+		this.init();
 	}
 
 	public AbstractMapper(String fileName) {
 		this.fileName = fileName;
-		this.init(fileName);
+		this.init();
 	}
 
-	protected void init(String fileName) {
-		ConnectionUtil.init(fileName);
+	protected void init() {
+		ConnectionUtil.init(getFileName());
 	}
+
+	public String getFileName() {
+		return fileName;
+	}
+
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
+
 }

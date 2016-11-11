@@ -3,7 +3,7 @@ package com.di.jdbc.mapper.core;
 /**
  * @author di
  */
-public class JdbcMapper extends ObjectPagerMapper {
+public class JdbcMapper extends TransactionMapper {
 	public JdbcMapper() {
 		super();
 	}
