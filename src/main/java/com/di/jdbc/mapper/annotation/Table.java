@@ -12,11 +12,11 @@ import java.lang.annotation.Target;
 public @interface Table {
 	public abstract String name();
 
-	public abstract String catalog();
+	public abstract String catalog() default "";
 
-	public abstract String schema();
+	public abstract String schema() default "";
 
-	public abstract UniqueConstraint[] uniqueConstraints();
+	public abstract UniqueConstraint[] uniqueConstraints() default {};
 
-	public abstract Index[] indexes();
+	public abstract Index[] indexes() default {};
 }
