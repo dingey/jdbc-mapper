@@ -35,8 +35,10 @@ public class PrepareStatementMapper extends StatementMapper {
 		ResultSet rs = null;
 		try {
 			ps = c.prepareStatement(preSql);
-			for (int i = 1; i <= args.length; i++) {
-				ps.setObject(i, args[i]);
+			if (args != null) {
+				for (int i = 1; i <= args.length; i++) {
+					ps.setObject(i, args[i]);
+				}
 			}
 			b = ps.execute();
 		} catch (Exception e) {
@@ -68,8 +70,10 @@ public class PrepareStatementMapper extends StatementMapper {
 		ResultSet rs = null;
 		try {
 			ps = c.prepareStatement(preSql);
-			for (int i = 1; i <= args.length; i++) {
-				ps.setObject(i, args[i]);
+			if (args != null) {
+				for (int i = 1; i <= args.length; i++) {
+					ps.setObject(i, args[i]);
+				}
 			}
 			rs = ps.executeQuery();
 			res = ResultSetUtil.resultSetToMapList(rs);
@@ -101,8 +105,10 @@ public class PrepareStatementMapper extends StatementMapper {
 		ResultSet rs = null;
 		try {
 			ps = c.prepareStatement(preSql);
-			for (int i = 1; i <= args.length; i++) {
-				ps.setObject(i, args[i - 1]);
+			if (args != null) {
+				for (int i = 1; i <= args.length; i++) {
+					ps.setObject(i, args[i - 1]);
+				}
 			}
 			rs = ps.executeQuery();
 			while (rs.next()) {
@@ -152,8 +158,10 @@ public class PrepareStatementMapper extends StatementMapper {
 		ResultSet rs = null;
 		try {
 			ps = c.prepareStatement(preSql);
-			for (int i = 1; i <= args.length; i++) {
-				ps.setObject(i, args[i-1]);
+			if (args != null) {
+				for (int i = 1; i <= args.length; i++) {
+					ps.setObject(i, args[i - 1]);
+				}
 			}
 			rs = ps.executeQuery();
 			while (rs.next()) {
