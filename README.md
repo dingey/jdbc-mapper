@@ -74,7 +74,6 @@ void update(T o)
 void insertMillionObjects(List<T> os, int sqlSize, int batchSize)
 ```
 用于大批量插入数据，可插入百万条数据到数据库，sqlSize通常应小于10000，如果实体类字段较多数据较大则相应减小sqlSize值防止插入失败，batchSize随意。
-
 #分页查询
 执行分页查询,只支持mysql,oracle。
 ```
@@ -88,12 +87,16 @@ Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSi
 ```
 Pager<T> prepareNamedQueryPager(String namedQueryName, Object[] args, Class<T> resultClass)
 ```
+#命名查询
 执行本地命名查询
 ```
 @NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person"),
 		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
 public class Person {}
 ```
+可以将sql语句写在类上，方便统一管理。
+
+#分页查询
 ```
 Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> resultClass)
 ```
@@ -137,3 +140,5 @@ public class Person {
 }
 ```
 支持分表查询，将代表表名的成员变量，添加@TableField注解。程序会自动将加了注解的变量值替换为表名。
+#分库查询
+分库查询默认以多数据源的形式实现。
