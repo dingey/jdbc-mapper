@@ -121,3 +121,19 @@ long countByExample(Object e, Class<T> resultClass)
 void deleteByExample(Object e, Class<T> resultClass)
 ```
 根据example删除;
+
+#分表查询
+```
+@NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person where id>?"),
+		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
+public class Person {
+	@Id
+	private Integer id;
+	private String name;
+	private Integer age;
+	private Integer sex;
+	@TableField
+	private String tableName;
+}
+```
+支持分表查询，将代表表名的成员变量，添加@TableField注解。程序会自动将加了注解的变量值替换为表名。
