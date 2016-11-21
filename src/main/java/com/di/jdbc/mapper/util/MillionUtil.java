@@ -12,13 +12,14 @@ import java.util.List;
 import com.di.jdbc.mapper.annotation.Column;
 import com.di.jdbc.mapper.annotation.Id;
 import com.di.jdbc.mapper.annotation.Table;
+import com.di.jdbc.mapper.annotation.TableField;
 
 /**
  * @author di
  */
 public class MillionUtil {
-	public static <T> void insertsPreSql(List<T> os, Connection c,int sqlSize,int batchSize) {
-		if(sqlSize>os.size()){
+	public static <T> void insertsPreSql(List<T> os, Connection c, int sqlSize, int batchSize) {
+		if (sqlSize > os.size()) {
 			System.err.println("error : sqlsize can't large than list.size()");
 			return;
 		}
@@ -39,6 +40,11 @@ public class MillionUtil {
 					s.append(f.getAnnotation(Column.class).name()).append(",");
 					fs.add(f.getName());
 					count++;
+				} else if (f.isAnnotationPresent(TableField.class)) {
+					String s0 = s.substring(s.indexOf("("));
+					s = new StringBuilder("insert into ");
+					s.append(f.get(o)).append(" ");
+					s.append(s0);
 				} else {
 					s.append(f.getName()).append(",");
 					fs.add(f.getName());
@@ -59,22 +65,22 @@ public class MillionUtil {
 				s.append("?").append(",");
 			}
 			s.append("?)");
-			PreparedStatement ps = null;			
+			PreparedStatement ps = null;
 			int offset0 = 0;
 			while (offset0 < os.size()) {
 				ps = c.prepareStatement(s.toString());
 				int offset = 0;
-				List<T> os0=os.subList(offset0, (offset0+sqlSize)>os.size()?os.size():(offset0+sqlSize));
+				List<T> os0 = os.subList(offset0, (offset0 + sqlSize) > os.size() ? os.size() : (offset0 + sqlSize));
 				for (T t : os0) {
 					for (int i = 0; i < fs.size(); i++) {
 						Field f = t.getClass().getDeclaredField(fs.get(i));
 						f.setAccessible(true);
 						offset++;
 						ps.setObject(offset, f.get(t));
-					}					
+					}
 				}
 				ps.addBatch();
-				offset0+=sqlSize;
+				offset0 += sqlSize;
 				ps.executeBatch();
 			}
 			if (ps != null) {
@@ -111,7 +117,12 @@ public class MillionUtil {
 				if (f.isAnnotationPresent(Id.class)) {
 					id = f;
 				}
-				if (f.isAnnotationPresent(Column.class)) {
+				if (f.isAnnotationPresent(TableField.class)) {
+					String s0 = s.substring(s.indexOf("("));
+					s = new StringBuilder("insert into ");
+					s.append(f.get(o)).append(" ");
+					s.append(s0);
+				} else if (f.isAnnotationPresent(Column.class)) {
 					s.append(f.getAnnotation(Column.class).name()).append(",");
 					count++;
 					as.add(f.get(o));
