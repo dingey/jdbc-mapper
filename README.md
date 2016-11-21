@@ -15,7 +15,11 @@ maxPoolSize=10
 ```
 配置为spring bean:<br>
 ```
-<bean id="jdbcMapper" class="com.di.jdbc.mapper.JdbcMapper"></bean>
+<bean id="jdbcMapper" class="com.di.jdbc.mapper.core.JdbcMapper"></bean>
+
+<bean id="jdbcMapper" class="com.di.jdbc.mapper.core.JdbcMapper">
+	<property name="fileName" value="jdbc.properties" />
+</bean>
 ```
 多数据源可以通过不同的构造函数实现。<br>
 JdbcMapper m=new JdbcMapper(String fileName);<br>
