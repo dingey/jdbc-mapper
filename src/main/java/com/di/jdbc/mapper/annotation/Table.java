@@ -7,7 +7,7 @@ import java.lang.annotation.Target;
 /**
  * @author di
  */
-@Target({ java.lang.annotation.ElementType.TYPE, java.lang.annotation.ElementType.FIELD })
+@Target({ java.lang.annotation.ElementType.TYPE })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Table {
 	public abstract String name();

@@ -14,6 +14,7 @@ import com.di.jdbc.mapper.annotation.JoinColumn;
 import com.di.jdbc.mapper.annotation.ManyToOne;
 import com.di.jdbc.mapper.annotation.OneToMany;
 import com.di.jdbc.mapper.annotation.Table;
+import com.di.jdbc.mapper.annotation.TableField;
 import com.di.jdbc.mapper.annotation.Transient;
 
 /**
@@ -47,6 +48,11 @@ public class ObjectMapperUtil {
 					s.append(f.getAnnotation(Column.class).name()).append(",");
 					count++;
 					as.add(f.get(o));
+				} else if (f.isAnnotationPresent(TableField.class)) {
+					String s0 = s.substring(s.indexOf("("));
+					s = new StringBuilder("insert into ");
+					s.append(f.get(o)).append(" ");
+					s.append(s0);
 				} else {
 					s.append(f.getName()).append(",");
 					count++;
@@ -126,6 +132,11 @@ public class ObjectMapperUtil {
 				if (f.isAnnotationPresent(Column.class)) {
 					s.append(f.getAnnotation(Column.class).name()).append("=?,");
 					as.add(f.get(o));
+				} else if (f.isAnnotationPresent(TableField.class)) {
+					String s0 = s.substring(s.indexOf(" set "));
+					s = new StringBuilder("update ");
+					s.append(f.get(o)).append(" ");
+					s.append(s0);
 				} else {
 					s.append(f.getName()).append("=?,");
 					as.add(f.get(o));
@@ -141,7 +152,7 @@ public class ObjectMapperUtil {
 			as.add(id.get(o));
 			PreparedStatement ps = null;
 			try {
-				System.out.println(s.toString());
+				// System.out.println(s.toString());
 				ps = c.prepareStatement(s.toString());
 				for (int i = 0; i < as.size(); i++) {
 					ps.setObject(i + 1, as.get(i));
@@ -200,12 +211,15 @@ public class ObjectMapperUtil {
 				if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
 				} else if (f.isAnnotationPresent(Transient.class)) {
+				} else if (f.isAnnotationPresent(TableField.class)) {
+					sql = new StringBuilder("insert into ");
+					sql.append(f.get(o)).append(" (");
 				} else if (f.isAnnotationPresent(Column.class)) {
 					s1.append(f.getAnnotation(Column.class).name()).append(",");
 				} else {
 					s1.append(f.getName()).append(",");
 				}
-			} catch (IllegalArgumentException e) {
+			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
 			}
 		}
@@ -224,6 +238,7 @@ public class ObjectMapperUtil {
 				if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
 				} else if (f.isAnnotationPresent(Transient.class)) {
+				} else if (f.isAnnotationPresent(TableField.class)) {
 				} else if (f.isAnnotationPresent(Column.class)) {
 					sql.append(SqlUtil.setSqlValue(o, f)).append(",");
 				} else {
@@ -240,7 +255,7 @@ public class ObjectMapperUtil {
 		ResultSet res = null;
 		try {
 			st = c.createStatement();
-			b=st.execute(sql.toString(), Statement.RETURN_GENERATED_KEYS);
+			b = st.execute(sql.toString(), Statement.RETURN_GENERATED_KEYS);
 			res = st.getGeneratedKeys();
 			if (res.next() && idField != null) {
 				SqlUtil.setFieldValue(o, idField, res);
