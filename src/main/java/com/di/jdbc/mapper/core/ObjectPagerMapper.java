@@ -28,8 +28,13 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 		return p;
 	}
 
-	public <T> Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t) {
+	public <T> Pager<T> prepareQueryPager(String preSql, Object[] args, int pageNum, int pageSize, Class<T> t,
+			String tableName) {
 		Pager<T> p = new Pager<>();
+		if (tableName != null) {
+			String s1 = preSql.substring(0, preSql.indexOf("from") + 4);
+			preSql = s1 + " " + tableName + " " + preSql.substring(preSql.indexOf("where"));
+		}
 		String sql0 = "select count(0) " + preSql.substring(preSql.indexOf("from"));
 		p.setPageNum(pageNum);
 		p.setPageSize(pageSize);
@@ -39,8 +44,8 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 		return p;
 	}
 
-	public <T> Pager<T> prepareNamedQueryPager(String queryName, Object[] args, int pageNum, int pageSize, Class<T> t) {
-		Pager<T> p = new Pager<>();
+	public <T> Pager<T> prepareNamedQueryPager(String queryName, Object[] args, int pageNum, int pageSize, Class<T> t,
+			String tableName) {
 		String preSql = "";
 		if (t.isAnnotationPresent(NamedNativeQueries.class) || t.isAnnotationPresent(NamedNativeQuery.class)) {
 			if (t.getAnnotation(NamedNativeQuery.class) != null
@@ -55,16 +60,10 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 				}
 			}
 		}
-		String sql0 = "select count(0) " + preSql.substring(preSql.indexOf("from"));
-		p.setPageNum(pageNum);
-		p.setPageSize(pageSize);
-		p.setTotal(this.prepareQueryForSingleValue(sql0, args, long.class));
-		p.setList(prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, getFileName()), args, t,
-				null));
-		return p;
+		return prepareQueryPager(preSql, args, pageNum, pageSize, t, tableName);
 	}
 
-	public <T> Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t) {
-		return queryPager(ExampleUtil.selectByExample(e, t), pageNum, pageSize, t);
+	public <T> Pager<T> selectPagerByExample(Object e, int pageNum, int pageSize, Class<T> t, String tableName) {
+		return prepareQueryPager(ExampleUtil.selectByExample(e, t), null, pageNum, pageSize, t, tableName);
 	}
 }
