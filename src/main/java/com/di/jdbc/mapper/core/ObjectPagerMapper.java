@@ -34,7 +34,8 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 		p.setPageNum(pageNum);
 		p.setPageSize(pageSize);
 		p.setTotal(this.prepareQueryForSingleValue(sql0, args, long.class));
-		p.setList(prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, fileName), args, t));
+		p.setList(prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, fileName), args, t,
+				null));
 		return p;
 	}
 
@@ -58,8 +59,8 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 		p.setPageNum(pageNum);
 		p.setPageSize(pageSize);
 		p.setTotal(this.prepareQueryForSingleValue(sql0, args, long.class));
-		p.setList(
-				prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, getFileName()), args, t));
+		p.setList(prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, getFileName()), args, t,
+				null));
 		return p;
 	}
 
