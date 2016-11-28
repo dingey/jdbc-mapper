@@ -4,7 +4,6 @@ import java.util.List;
 
 /**
  * @author di
- * @param <T>
  */
 public class Pager<T> {
 	List<T> list;

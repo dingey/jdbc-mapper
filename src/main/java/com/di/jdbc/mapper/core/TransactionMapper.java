@@ -8,8 +8,7 @@ import com.di.jdbc.mapper.util.SqlUtil;
 
 /**
  * @author di
- * @date 2016年11月10日 下午4:32:45
- * @since 1.0.0
+ * @since 1.0
  */
 public class TransactionMapper extends ObjectPagerMapper {
 	Connection con;

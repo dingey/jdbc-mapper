@@ -18,9 +18,8 @@ import com.di.jdbc.mapper.annotation.Table;
 import com.di.jdbc.mapper.annotation.Transient;
 
 /**
- * @author di:
- * @date 创建时间：2016年10月22日 上午10:58:35
- * @version
+ * @author di
+ * @version 1.0
  */
 public class SqlUtil {
 	public static void setFieldValue(Object o, Field f, ResultSet res, String column) {
