@@ -11,7 +11,7 @@
     <version>1.0-SNAPSHOT</version>
     <name>jdbc-mapper</name>
     <description>jdbc-mapper util</description>
-    <url>https://github.com/dingey/jdbc-mapper</url>
+    <url>https://github.com/dingey/jdbc-mapper</url>  
     <licenses>
         <license>
             <name>The Apache License, Version 2.0</name>
