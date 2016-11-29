@@ -2,6 +2,14 @@
 基于jdbc的封装，自带连接池等。支持多数据源，配置简单，支持注解sql查询，自带分页查询。
 
 #快速开始
+引入依赖
+```
+<dependency>
+<groupId>com.github.dingey</groupId>
+<artifactId>jdbc-mapper</artifactId>
+<version>1.0</version>
+</dependency>
+```
 JdbcMapper m=new JdbcMapper();<br>
 默认加载classpath路径下的jdbc.properties文件。<br>
 properties文件中必须配置driverClassName,url,username,password,initPoolSize（可选）,maxPoolSize（可选）。<br>
