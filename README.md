@@ -165,7 +165,7 @@ try {
 	mapper.beginTransaction();
 	mapper.insertWithTransaction(m);
 	m.setName("a");
-	mapper.update(m);
+	mapper.updateWithTransaction(m);
 	mapper.deleteWithTransaction(m);
 	mapper.commit();
 } catch (SQLException e) {
