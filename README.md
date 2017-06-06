@@ -154,3 +154,22 @@ public class Person {
 支持分表查询，将代表表名的成员变量，添加@TableField注解。程序会自动将加了注解的变量值替换为表名。
 #分库查询
 分库查询默认以多数据源的形式实现。
+
+#事务
+```
+JdbcMapper mapper=new JdbcMapper();
+try {
+	Man m=new Man();
+	m.setId(1);
+	m.setName("b");
+	mapper.beginTransaction();
+	mapper.insertWithTransaction(m);
+	m.setName("a");
+	mapper.update(m);
+	mapper.deleteWithTransaction(m);
+	mapper.commit();
+} catch (SQLException e) {
+	e.printStackTrace();
+	mapper.rollback();
+}
+```
