@@ -49,10 +49,10 @@ public class ObjectMapper extends PrepareStatementMapper {
 	public <T extends Map<String, Object>, E> List<E> where(T t, Class<E> e, Boolean ignoreNull) {
 		StringBuilder s = new StringBuilder();
 		s.append("select * from ");
-		if (e.getClass().isAnnotationPresent(Table.class)) {
-			s.append(e.getClass().getAnnotation(Table.class).name());
+		if (e.isAnnotationPresent(Table.class)) {
+			s.append(e.getAnnotation(Table.class).name());
 		} else {
-			s.append(e.getClass().getSimpleName());
+			s.append(e.getSimpleName());
 		}
 		s.append(" where 1=1");
 		Object[] args = new Object[t.size()];
