@@ -99,7 +99,7 @@ public class PrepareStatementMapper extends StatementMapper {
 		return res;
 	}
 
-	public <T> List<T> prepareQueryForList(String preSql, Object[] args, Class<T> resultClass, String tableName) {
+	public <T> List<T> prepareQueryForList(String preSql, Object[] args, Class<T> resultClass) {
 		List<T> list = new ArrayList<>();
 		Connection c = ConnectionUtil.getConn(fileName);
 		PreparedStatement ps = null;
@@ -118,9 +118,6 @@ public class PrepareStatementMapper extends StatementMapper {
 				for (Field f : fs) {
 					f.setAccessible(true);
 					if (f.isAnnotationPresent(TableField.class)) {
-						if (tableName != null) {
-							f.set(obj, tableName);
-						}
 						continue;
 					}
 					String column = f.getName();
@@ -153,8 +150,8 @@ public class PrepareStatementMapper extends StatementMapper {
 		return list;
 	}
 
-	public <T> T prepareQueryForObject(String sql, Object[] args, Class<T> resultClass, String tableName) {
-		List<T> list = prepareQueryForList(sql, args, resultClass, tableName);
+	public <T> T prepareQueryForObject(String sql, Object[] args, Class<T> resultClass) {
+		List<T> list = prepareQueryForList(sql, args, resultClass);
 		return list.isEmpty() ? null : list.get(0);
 	}
 
@@ -220,7 +217,7 @@ public class PrepareStatementMapper extends StatementMapper {
 				preSql = s1 + " " + tableName;
 			}
 		}
-		return this.prepareQueryForList(preSql, args, resultClass, tableName);
+		return this.prepareQueryForList(preSql, args, resultClass);
 	}
 
 }

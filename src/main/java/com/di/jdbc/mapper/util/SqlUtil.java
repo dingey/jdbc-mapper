@@ -54,9 +54,8 @@ public class SqlUtil {
 				return res.getObject(1);
 			}
 		} catch (SQLException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public static void setFieldValue(Object o, Field f, ResultSet res) {
@@ -120,9 +119,8 @@ public class SqlUtil {
 				return res.getObject(colIndex);
 			}
 		} catch (SQLException | IllegalArgumentException e) {
-			e.printStackTrace();
+			return null;
 		}
-		return null;
 	}
 
 	public static Object setSqlValue(Object o, Field f) {
