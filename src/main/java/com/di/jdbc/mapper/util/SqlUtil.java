@@ -89,10 +89,18 @@ public class SqlUtil {
 			} else {
 				return res.getObject(colName);
 			}
-		} catch (SQLException | IllegalArgumentException e) {
-			e.printStackTrace();
+		} catch (IllegalArgumentException e1) {
+			return 0;
+		} catch (SQLException e) {
+			if (f.getType() == boolean.class) {
+				return false;
+			} else if (f.getType() == byte.class || f.getType() == short.class || f.getType() == int.class
+					|| f.getType() == long.class || f.getType() == float.class||f.getType() == double.class) {
+				return 0;
+			} else {
+				return null;
+			}
 		}
-		return null;
 	}
 
 	private static Object getResultSetTypeByFieldType(Field f, ResultSet res, int colIndex) {

@@ -14,6 +14,7 @@ import com.di.jdbc.mapper.annotation.NamedNativeQueries;
 import com.di.jdbc.mapper.annotation.NamedNativeQuery;
 import com.di.jdbc.mapper.annotation.TableField;
 import com.di.jdbc.mapper.util.ConnectionUtil;
+import com.di.jdbc.mapper.util.ReflectUtil;
 import com.di.jdbc.mapper.util.ResultSetUtil;
 import com.di.jdbc.mapper.util.SqlUtil;
 
@@ -114,8 +115,7 @@ public class PrepareStatementMapper extends StatementMapper {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				T obj = resultClass.newInstance();
-				Field[] fs = obj.getClass().getDeclaredFields();
-				for (Field f : fs) {
+				for (Field f : ReflectUtil.getCommonFields(resultClass)) {
 					f.setAccessible(true);
 					if (f.isAnnotationPresent(TableField.class)) {
 						continue;
