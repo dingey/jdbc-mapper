@@ -1,6 +1,7 @@
 package com.di.jdbc.mapper.util;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.Modifier;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -27,14 +28,14 @@ public class ObjectMapperUtil {
 		if (o.getClass().isAnnotationPresent(Table.class)) {
 			s.append(o.getClass().getAnnotation(Table.class).name());
 		} else {
-			s.append(o.getClass().getSimpleName());
+			s.append(Camel.toUnderline(o.getClass().getSimpleName()));
 		}
 		s.append("(");
 		List<Object> as = new ArrayList<>();
 		Field id = null;
 		try {
 			int count = 0;
-			for (Field f : o.getClass().getDeclaredFields()) {
+			for (Field f : getFields(o)) {
 				f.setAccessible(true);
 				if (ignoreNull) {
 					if (f.get(o) == null) {
@@ -54,7 +55,7 @@ public class ObjectMapperUtil {
 					s.append(f.get(o)).append(" ");
 					s.append(s0);
 				} else {
-					s.append(f.getName()).append(",");
+					s.append(Camel.toUnderline(f.getName())).append(",");
 					count++;
 					as.add(f.get(o));
 				}
@@ -112,13 +113,13 @@ public class ObjectMapperUtil {
 		if (o.getClass().isAnnotationPresent(Table.class)) {
 			s.append(o.getClass().getAnnotation(Table.class).name());
 		} else {
-			s.append(o.getClass().getSimpleName());
+			s.append(Camel.toUnderline(o.getClass().getSimpleName()));
 		}
 		s.append(" set ");
 		List<Object> as = new ArrayList<>();
 		Field id = null;
 		try {
-			for (Field f : o.getClass().getDeclaredFields()) {
+			for (Field f : getFields(o)) {
 				f.setAccessible(true);
 				if (ignoreNull) {
 					if (f.get(o) == null) {
@@ -138,7 +139,7 @@ public class ObjectMapperUtil {
 					s.append(f.get(o)).append(" ");
 					s.append(s0);
 				} else {
-					s.append(f.getName()).append("=?,");
+					s.append(Camel.toUnderline(f.getName())).append("=?,");
 					as.add(f.get(o));
 				}
 			}
@@ -147,7 +148,7 @@ public class ObjectMapperUtil {
 			if (id.isAnnotationPresent(Column.class)) {
 				s.append(id.getAnnotation(Column.class).name()).append("=?");
 			} else {
-				s.append(id.getName()).append("=?");
+				s.append(Camel.toUnderline(id.getName())).append("=?");
 			}
 			as.add(id.get(o));
 			PreparedStatement ps = null;
@@ -185,12 +186,12 @@ public class ObjectMapperUtil {
 
 	public static <T> boolean insertSql(T o, Connection c, boolean ignoreNull) {
 		boolean b = false;
-		Field fs[] = o.getClass().getDeclaredFields();
+		List<Field> fs = getFields(o);
 		String tabName;
 		if (o.getClass().isAnnotationPresent(Table.class)) {
 			tabName = o.getClass().getAnnotation(Table.class).name();
 		} else {
-			tabName = o.getClass().getSimpleName();
+			tabName = Camel.toUnderline(o.getClass().getSimpleName());
 		}
 		StringBuilder sql = new StringBuilder("insert into ").append(tabName).append(" (");
 		StringBuilder s1 = new StringBuilder();
@@ -217,7 +218,7 @@ public class ObjectMapperUtil {
 				} else if (f.isAnnotationPresent(Column.class)) {
 					s1.append(f.getAnnotation(Column.class).name()).append(",");
 				} else {
-					s1.append(f.getName()).append(",");
+					s1.append(Camel.toUnderline(f.getName())).append(",");
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
@@ -283,5 +284,23 @@ public class ObjectMapperUtil {
 			}
 		}
 		return b;
+	}
+	
+	private static List<Field> getFields(Object bean) {
+		Class<?> clazz = bean.getClass();
+		List<Field> fields = new ArrayList<>();
+		for (; clazz != Object.class; clazz = clazz.getSuperclass()) {
+			try {
+				for (Field f : clazz.getDeclaredFields()) {
+					int modifiers = f.getModifiers();
+					if (!Modifier.isFinal(modifiers) && !Modifier.isStatic(modifiers) && !Modifier.isNative(modifiers)
+							&& !Modifier.isTransient(modifiers)) {
+						fields.add(f);
+					}
+				}
+			} catch (Exception e) {
+			}
+		}
+		return fields;
 	}
 }
