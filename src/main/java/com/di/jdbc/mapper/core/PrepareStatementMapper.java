@@ -192,8 +192,7 @@ public class PrepareStatementMapper extends StatementMapper {
 		return null;
 	}
 
-	public <T> List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> resultClass,
-			String tableName) {
+	public <T> List<T> prepareNamedQueryForList(String namedQueryName, Object[] args, Class<T> resultClass) {
 		String preSql = "";
 		if (resultClass.isAnnotationPresent(NamedNativeQueries.class)
 				|| resultClass.isAnnotationPresent(NamedNativeQuery.class)) {
@@ -206,15 +205,6 @@ public class PrepareStatementMapper extends StatementMapper {
 			if (resultClass.isAnnotationPresent(NamedNativeQuery.class)
 					&& resultClass.getAnnotation(NamedNativeQuery.class).name().equals(namedQueryName)) {
 				preSql = resultClass.getAnnotation(NamedNativeQuery.class).query();
-			}
-		}
-		if (tableName != null) {
-			String s1 = preSql.substring(0, preSql.indexOf("from") + 4);
-			if (preSql.indexOf("where") != -1) {
-				String s2 = preSql.substring(preSql.indexOf("where"));
-				preSql = s1 + " " + tableName + " " + s2;
-			} else {
-				preSql = s1 + " " + tableName;
 			}
 		}
 		return this.prepareQueryForList(preSql, args, resultClass);
