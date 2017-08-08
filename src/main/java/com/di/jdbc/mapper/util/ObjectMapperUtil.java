@@ -49,7 +49,7 @@ public class ObjectMapperUtil {
 					s.append(f.getAnnotation(Column.class).name()).append(",");
 					count++;
 					as.add(f.get(o));
-				} else if (f.isAnnotationPresent(TableField.class)) {
+				} else if (f.isAnnotationPresent(TableField.class)&&f.get(o)!=null) {
 					String s0 = s.substring(s.indexOf("("));
 					s = new StringBuilder("insert into ");
 					s.append(f.get(o)).append(" ");
@@ -133,7 +133,7 @@ public class ObjectMapperUtil {
 				if (f.isAnnotationPresent(Column.class)) {
 					s.append(f.getAnnotation(Column.class).name()).append("=?,");
 					as.add(f.get(o));
-				} else if (f.isAnnotationPresent(TableField.class)) {
+				} else if (f.isAnnotationPresent(TableField.class)&&f.get(o)!=null) {
 					String s0 = s.substring(s.indexOf(" set "));
 					s = new StringBuilder("update ");
 					s.append(f.get(o)).append(" ");
@@ -212,7 +212,7 @@ public class ObjectMapperUtil {
 				if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
 				} else if (f.isAnnotationPresent(Transient.class)) {
-				} else if (f.isAnnotationPresent(TableField.class)) {
+				} else if (f.isAnnotationPresent(TableField.class)&&f.get(o)!=null) {
 					sql = new StringBuilder("insert into ");
 					sql.append(f.get(o)).append(" (");
 				} else if (f.isAnnotationPresent(Column.class)) {
