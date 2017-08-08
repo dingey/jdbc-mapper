@@ -7,7 +7,7 @@
 <dependency>
 <groupId>com.github.dingey</groupId>
 <artifactId>jdbc-mapper</artifactId>
-<version>1.0</version>
+<version>1.1</version>
 </dependency>
 ```
 JdbcMapper m=new JdbcMapper();<br>
