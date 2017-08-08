@@ -44,7 +44,7 @@ public class Camel {
 	 *            源字符串
 	 * @return 转换后的字符串
 	 */
-	static String toUnderline(String line) {
+	public static String toUnderline(String line) {
 		if (line == null || "".equals(line)) {
 			return "";
 		}

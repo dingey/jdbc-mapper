@@ -5,6 +5,7 @@ import java.util.Map;
 import com.di.jdbc.mapper.annotation.NamedNativeQueries;
 import com.di.jdbc.mapper.annotation.NamedNativeQuery;
 import com.di.jdbc.mapper.annotation.Table;
+import com.di.jdbc.mapper.util.Camel;
 import com.di.jdbc.mapper.util.ExampleUtil;
 import com.di.jdbc.mapper.util.Pager;
 import com.di.jdbc.mapper.util.PagerSqlUtil;
@@ -91,5 +92,23 @@ public class ObjectPagerMapper extends ObjectExampleMapper {
 			args1[j] = args[j];
 		}
 		return prepareQueryPager(s.toString(), args1, pageNum, pageSize, e);
+	}
+	
+	public <T> Pager<T> pagerAll(int pageNum, int pageSize, Class<T> t) {
+		StringBuilder s = new StringBuilder();
+		s.append("select * from ");
+		if (t.isAnnotationPresent(Table.class)) {
+			s.append(t.getAnnotation(Table.class).name());
+		} else {
+			s.append(Camel.toUnderline(t.getSimpleName()));
+		}
+		String preSql=s.toString();
+		Pager<T> p = new Pager<>();
+		String sql0 = "select count(0) " + preSql.substring(preSql.indexOf("from"));
+		p.setPageNum(pageNum);
+		p.setPageSize(pageSize);
+		p.setTotal(this.prepareQueryForSingleValue(sql0, null, long.class));
+		p.setList(prepareQueryForList(PagerSqlUtil.getPreparePageSql(preSql, pageNum, pageSize, fileName), null, t));
+		return p;
 	}
 }
