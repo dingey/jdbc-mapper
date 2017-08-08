@@ -40,6 +40,24 @@ JdbcMapper m=new JdbcMapper(String fileName);<br>
 </constructor-arg>
 </bean>
 ```
+#实体介绍
+```
+import com.di.jdbc.mapper.annotation.Column;
+import com.di.jdbc.mapper.annotation.Id;
+import com.di.jdbc.mapper.annotation.NamedNativeQueries;
+import com.di.jdbc.mapper.annotation.NamedNativeQuery;
+import com.di.jdbc.mapper.annotation.Table;
+@Table(name = "man")
+@NamedNativeQueries(@NamedNativeQuery(name = "getOne", query = "select * from man where id=?"))
+public class Man {
+	@Id
+	private int id;
+	@Column(name = "")
+	private String name;
+}
+```
+默认注解优先，如果没注解表名和字段名没注解，将默认以驼峰转换成下划线的形式来映射。
+
 #方法介绍
 ```
 boolean execute(String sql)
