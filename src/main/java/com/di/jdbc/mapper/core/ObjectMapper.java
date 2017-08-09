@@ -12,7 +12,7 @@ import com.di.jdbc.mapper.util.Camel;
 import com.di.jdbc.mapper.util.ConnectionUtil;
 import com.di.jdbc.mapper.util.MillionUtil;
 import com.di.jdbc.mapper.util.ObjectMapperUtil;
-import com.di.jdbc.mapper.util.Reflect;
+import com.di.jdbc.mapper.util.ReflectUtil;
 
 /**
  * @author di
@@ -90,7 +90,7 @@ public class ObjectMapper extends PrepareStatementMapper {
 			s.append(Camel.toUnderline(resultClass.getSimpleName()));
 		}
 		s.append(" where ");
-		for (Field f : Reflect.getFields(resultClass)) {
+		for (Field f : ReflectUtil.getCommonFields(resultClass)) {
 			if (f.isAnnotationPresent(Id.class)) {
 				if (f.isAnnotationPresent(Column.class)) {
 					s.append(f.getAnnotation(Column.class).name());

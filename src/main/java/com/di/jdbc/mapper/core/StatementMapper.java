@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import com.di.jdbc.mapper.annotation.Column;
 import com.di.jdbc.mapper.util.ConnectionUtil;
+import com.di.jdbc.mapper.util.ReflectUtil;
 import com.di.jdbc.mapper.util.ResultSetUtil;
 import com.di.jdbc.mapper.util.SqlUtil;
 
@@ -97,8 +98,7 @@ public class StatementMapper extends AbstractMapper {
 			rs = st.executeQuery(sql);
 			while (rs.next()) {
 				T obj = resultClass.newInstance();
-				Field[] fs = obj.getClass().getDeclaredFields();
-				for (Field f : fs) {
+				for (Field f : ReflectUtil.getCommonFields(resultClass)) {
 					f.setAccessible(true);
 					String column = f.getName();
 					if (f.isAnnotationPresent(Column.class)) {
