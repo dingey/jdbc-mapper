@@ -8,6 +8,8 @@ import java.util.Map;
 import com.di.jdbc.mapper.annotation.Column;
 import com.di.jdbc.mapper.annotation.Id;
 import com.di.jdbc.mapper.annotation.Table;
+import com.di.jdbc.mapper.util.CacheMapper;
+import com.di.jdbc.mapper.util.CacheMapper.Func;
 import com.di.jdbc.mapper.util.Camel;
 import com.di.jdbc.mapper.util.ConnectionUtil;
 import com.di.jdbc.mapper.util.MillionUtil;
@@ -82,36 +84,48 @@ public class ObjectMapper extends PrepareStatementMapper {
 	}
 
 	public <T> T get(Object id, Class<T> resultClass) {
-		StringBuilder s = new StringBuilder();
-		s.append("select * from ");
-		if (resultClass.isAnnotationPresent(Table.class)) {
-			s.append(resultClass.getAnnotation(Table.class).name());
-		} else {
-			s.append(Camel.toUnderline(resultClass.getSimpleName()));
-		}
-		s.append(" where ");
-		for (Field f : ReflectUtil.getCommonFields(resultClass)) {
-			if (f.isAnnotationPresent(Id.class)) {
-				if (f.isAnnotationPresent(Column.class)) {
-					s.append(f.getAnnotation(Column.class).name());
+		String sql = CacheMapper.getCacheSqlByClass("get", resultClass, true, new Func() {
+			@Override
+			public String apply() {
+				StringBuilder s = new StringBuilder();
+				s.append("select * from ");
+				if (resultClass.isAnnotationPresent(Table.class)) {
+					s.append(resultClass.getAnnotation(Table.class).name());
 				} else {
-					s.append(Camel.toUnderline(f.getName()));
+					s.append(Camel.toUnderline(resultClass.getSimpleName()));
 				}
-				s.append("=?");
-				break;
+				s.append(" where ");
+				for (Field f : ReflectUtil.getCommonFields(resultClass)) {
+					if (f.isAnnotationPresent(Id.class)) {
+						if (f.isAnnotationPresent(Column.class)) {
+							s.append(f.getAnnotation(Column.class).name());
+						} else {
+							s.append(Camel.toUnderline(f.getName()));
+						}
+						s.append("=?");
+						break;
+					}
+				}
+				return s.toString();
 			}
-		}
-		return prepareQueryForObject(s.toString(), new Object[] { id }, resultClass);
+		});
+		return prepareQueryForObject(sql, new Object[] { id }, resultClass);
 	}
-	
-	public <T> List<T> findAll(Class<T> resultClass){
-		StringBuilder s = new StringBuilder();
-		s.append("select * from ");
-		if (resultClass.isAnnotationPresent(Table.class)) {
-			s.append(resultClass.getAnnotation(Table.class).name());
-		} else {
-			s.append(Camel.toUnderline(resultClass.getSimpleName()));
-		}
-		return queryForList(s.toString(), resultClass);
+
+	public <T> List<T> findAll(Class<T> resultClass) {
+		String sql = CacheMapper.getCacheSqlByClass("findAll", resultClass, true, new Func() {
+			@Override
+			public String apply() {
+				StringBuilder s = new StringBuilder();
+				s.append("select * from ");
+				if (resultClass.isAnnotationPresent(Table.class)) {
+					s.append(resultClass.getAnnotation(Table.class).name());
+				} else {
+					s.append(Camel.toUnderline(resultClass.getSimpleName()));
+				}
+				return s.toString();
+			}
+		});
+		return queryForList(sql, resultClass);
 	}
 }

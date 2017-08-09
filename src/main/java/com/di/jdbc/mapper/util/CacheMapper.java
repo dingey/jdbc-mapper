@@ -15,13 +15,13 @@ public class CacheMapper {
 	static final HashMap<String, Row> cacheMap = new HashMap<>();
 	static final HashMap<String, String> sqlMap = new HashMap<>();
 
-	public static <T> String getCacheSql(String key, T t, boolean cachable, Func<T> func) {
+	public static <T> String getCacheSqlByClass(String key, Class<T> t, boolean cachable, Func func) {
 		if (!cachable) {
-			return func.apply(t);
+			return func.apply();
 		}
 		String id = t.getClass().getName() + "#" + key;
 		if (!sqlMap.containsKey(id)) {
-			String apply = func.apply(t);
+			String apply = func.apply();
 			sqlMap.put(id, apply);
 		}
 		return sqlMap.get(id);
@@ -132,7 +132,7 @@ public class CacheMapper {
 
 	}
 
-	public interface Func<T> {
-		String apply(T t);
+	public interface Func {
+		String apply();
 	}
 }
