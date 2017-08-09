@@ -9,12 +9,12 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
-import com.di.jdbc.mapper.annotation.Column;
 import com.di.jdbc.mapper.annotation.NamedNativeQueries;
 import com.di.jdbc.mapper.annotation.NamedNativeQuery;
-import com.di.jdbc.mapper.annotation.TableField;
 import com.di.jdbc.mapper.util.ConnectionUtil;
-import com.di.jdbc.mapper.util.ReflectUtil;
+import com.di.jdbc.mapper.util.CacheMapper;
+import com.di.jdbc.mapper.util.CacheMapper.Col;
+import com.di.jdbc.mapper.util.CacheMapper.Row;
 import com.di.jdbc.mapper.util.ResultSetUtil;
 import com.di.jdbc.mapper.util.SqlUtil;
 
@@ -105,6 +105,7 @@ public class PrepareStatementMapper extends StatementMapper {
 		Connection c = ConnectionUtil.getConn(fileName);
 		PreparedStatement ps = null;
 		ResultSet rs = null;
+		Row row = CacheMapper.getCacheRowMapper(resultClass);
 		try {
 			ps = c.prepareStatement(preSql);
 			if (args != null) {
@@ -115,16 +116,10 @@ public class PrepareStatementMapper extends StatementMapper {
 			rs = ps.executeQuery();
 			while (rs.next()) {
 				T obj = resultClass.newInstance();
-				for (Field f : ReflectUtil.getCommonFields(resultClass)) {
+				for (Col col : row.getAlls()) {
+					Field f=col.getField();
 					f.setAccessible(true);
-					if (f.isAnnotationPresent(TableField.class)) {
-						continue;
-					}
-					String column = f.getName();
-					if (f.isAnnotationPresent(Column.class)) {
-						column = f.getAnnotation(Column.class).name();
-					}
-					SqlUtil.setFieldValue(obj, f, rs, column);
+					SqlUtil.setFieldValue(obj, f, rs, col.getName());
 				}
 				list.add(obj);
 			}
