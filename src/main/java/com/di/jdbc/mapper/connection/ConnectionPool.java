@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DatabaseMetaData;
 import java.sql.Driver;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Enumeration;
@@ -190,18 +191,10 @@ public class ConnectionPool {
 	@SuppressWarnings("unused")
 	private boolean testConnection(Connection conn) {
 		try {
-			// 判定测试表是否存在
-			if (testTable.equals("")) {
-				// 假如测试表为空，试着使用此连接的 setAutoCommit() 方法
-				// 来判定连接否可用（此方法只在部分数据库可用，假如不可用 ,
-				// 抛出异常）。注重：使用测试表的方法更可靠
-				// conn.setAutoCommit(true);
-				conn.isValid(2);
-			} else { // 有测试表的时候使用测试表测试
-				// check if this connection is valid
-				Statement stmt = conn.createStatement();
-				stmt.execute("select count(*) from " + testTable);
-			}
+			Statement stmt = conn.createStatement();
+			ResultSet resultSet = stmt.executeQuery("select 1");
+			resultSet.close();
+			stmt.close();
 		} catch (SQLException e) {
 			// 上面抛出异常，此连接己不可用，关闭它，并返回 false;
 			closeConnection(conn);
@@ -244,7 +237,8 @@ public class ConnectionPool {
 			pConn = (PooledConnection) enumerate.nextElement();
 			// 假如对象忙则等 5 秒 ,5 秒后直接刷新
 			if (pConn.isBusy()) {
-				wait(20000); // 等 1秒
+				// wait(100); // 等 1秒
+				continue;
 			}
 			// 关闭此连接，用一个新的连接代替它。
 			closeConnection(pConn.getConnection());

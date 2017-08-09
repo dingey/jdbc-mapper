@@ -15,7 +15,7 @@ import com.di.jdbc.mapper.connection.ConnectionPool;
  * @author di
  */
 public class ConnectionUtil {
-	static int INTERVAL = 20;
+	static int INTERVAL = 30;
 	static Map<String, ConnectionPool> pools;
 	static Map<String, String> sqlTypes = new HashMap<>();
 	static AtomicBoolean runStatus = new AtomicBoolean(false);
