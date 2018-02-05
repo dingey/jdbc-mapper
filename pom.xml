@@ -8,7 +8,7 @@
 	</parent>
 	<groupId>com.github.dingey</groupId>
 	<artifactId>jdbc-mapper</artifactId>
-	<version>1.1</version>
+	<version>1.2</version>
 	<name>jdbc-mapper</name>
 	<description>jdbc-mapper util</description>
 	<url>https://github.com/dingey/jdbc-mapper</url>
