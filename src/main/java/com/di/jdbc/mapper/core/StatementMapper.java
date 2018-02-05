@@ -10,6 +10,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import com.di.jdbc.mapper.annotation.Column;
+import com.di.jdbc.mapper.util.Camel;
 import com.di.jdbc.mapper.util.ConnectionUtil;
 import com.di.jdbc.mapper.util.ReflectUtil;
 import com.di.jdbc.mapper.util.ResultSetUtil;
@@ -103,6 +104,8 @@ public class StatementMapper extends AbstractMapper {
 					String column = f.getName();
 					if (f.isAnnotationPresent(Column.class)) {
 						column = f.getAnnotation(Column.class).name();
+					} else {
+						column=Camel.toUnderline(column);
 					}
 					SqlUtil.setFieldValue(obj, f, rs, column);
 				}
@@ -166,5 +169,5 @@ public class StatementMapper extends AbstractMapper {
 		}
 		return null;
 	}
-	
+
 }

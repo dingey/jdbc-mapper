@@ -159,7 +159,7 @@ public class SqlUtil {
 				Field[] fs = obj.getClass().getDeclaredFields();
 				for (Field f : fs) {
 					f.setAccessible(true);
-					String column = f.getName();
+					String column = Camel.toUnderline(f.getName());
 					if (f.isAnnotationPresent(Column.class)) {
 						column = f.getAnnotation(Column.class).name();
 					}
@@ -199,7 +199,7 @@ public class SqlUtil {
 					if (f.isAnnotationPresent(Column.class)) {
 						idName = f.getAnnotation(Column.class).name();
 					} else {
-						idName = f.getName();
+						idName = Camel.toUnderline(f.getName());
 					}
 				} else if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
@@ -208,7 +208,7 @@ public class SqlUtil {
 					sql.append(f.getAnnotation(Column.class).name()).append("=").append(SqlUtil.setSqlValue(o, f))
 							.append(",");
 				} else {
-					sql.append(f.getName()).append("=").append(SqlUtil.setSqlValue(o, f)).append(",");
+					sql.append(Camel.toUnderline(f.getName())).append("=").append(SqlUtil.setSqlValue(o, f)).append(",");
 				}
 			} catch (IllegalArgumentException | IllegalAccessException e) {
 				e.printStackTrace();
@@ -242,11 +242,11 @@ public class SqlUtil {
 			try {
 				if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
-				} else if (f.isAnnotationPresent(Transient.class) || !f.getAnnotation(Column.class).insertable()) {
+				} else if (f.isAnnotationPresent(Transient.class) || (f.isAnnotationPresent(Column.class)&&!f.getAnnotation(Column.class).insertable())) {
 				} else if (f.isAnnotationPresent(Column.class)) {
 					s1.append(f.getAnnotation(Column.class).name()).append(",");
 				} else {
-					s1.append(f.getName()).append(",");
+					s1.append(Camel.toUnderline(f.getName())).append(",");
 				}
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
@@ -266,7 +266,7 @@ public class SqlUtil {
 			try {
 				if (f.isAnnotationPresent(JoinColumn.class) && f.isAnnotationPresent(ManyToOne.class)) {
 				} else if (f.isAnnotationPresent(OneToMany.class)) {
-				} else if (f.isAnnotationPresent(Transient.class) || !f.getAnnotation(Column.class).insertable()) {
+				} else if (f.isAnnotationPresent(Transient.class) || (f.isAnnotationPresent(Column.class)&&!f.getAnnotation(Column.class).insertable())) {
 				} else if (f.isAnnotationPresent(Column.class)) {
 					sql.append(SqlUtil.setSqlValue(o, f)).append(",");
 				} else {
@@ -300,7 +300,7 @@ public class SqlUtil {
 					if (f.isAnnotationPresent(Column.class)) {
 						s0.append(f.getAnnotation(Column.class).name()).append(",");
 					} else {
-						s0.append(f.getName()).append(",");
+						s0.append(Camel.toUnderline(f.getName())).append(",");
 					}
 				}
 			}
@@ -336,14 +336,14 @@ public class SqlUtil {
 						if (f.isAnnotationPresent(Column.class)) {
 							idName = f.getAnnotation(Column.class).name();
 						} else {
-							idName = f.getName();
+							idName = Camel.toUnderline(f.getName());
 						}
 						continue;
 					}
 					if (f.isAnnotationPresent(Column.class)) {
 						s0.append(f.getAnnotation(Column.class).name()).append("=?,");
 					} else {
-						s0.append(f.getName()).append("=?,");
+						s0.append(Camel.toUnderline(f.getName())).append("=?,");
 					}
 				}
 			}
@@ -451,7 +451,7 @@ public class SqlUtil {
 				if (f.isAnnotationPresent(Column.class)) {
 					idName = f.getAnnotation(Column.class).name();
 				} else {
-					idName = f.getName();
+					idName = Camel.toUnderline(f.getName());
 				}
 				try {
 					idValue = f.get(o);
@@ -485,7 +485,7 @@ public class SqlUtil {
 				} else if (f.isAnnotationPresent(Column.class)) {
 					s1.append(f.getAnnotation(Column.class).name()).append(",");
 				} else {
-					s1.append(f.getName()).append(",");
+					s1.append(Camel.toUnderline(f.getName())).append(",");
 				}
 			} catch (IllegalArgumentException e) {
 				e.printStackTrace();
