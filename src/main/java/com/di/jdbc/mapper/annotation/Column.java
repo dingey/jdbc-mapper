@@ -4,13 +4,14 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
-/**
- * @author di
- */
+import com.di.jdbc.mapper.annotation.TypeHandler.BaseTypeHandler;
+
 @Target({ java.lang.annotation.ElementType.METHOD, java.lang.annotation.ElementType.FIELD })
 @Retention(RetentionPolicy.RUNTIME)
 public @interface Column {
-	public abstract String name();
+	public abstract String value() default "";
+
+	public abstract String name() default "";
 
 	public abstract boolean unique() default true;
 
@@ -29,4 +30,7 @@ public @interface Column {
 	public abstract int precision() default 2;
 
 	public abstract int scale() default 0;
+
+	@SuppressWarnings("rawtypes")
+	public abstract Class<? extends TypeHandler> typeHandler() default BaseTypeHandler.class;
 }
