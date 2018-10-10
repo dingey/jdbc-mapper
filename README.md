@@ -17,6 +17,11 @@ DataSource dataSource=DefaultDataSource.build("jdbc:mysql://localhost:3306/sys",
 JdbcFactory factory = JdbcFactory.build(dataSource);
 JdbcMapper mapper = factory.getMapper();
 ```
+或者
+```
+DataSource dataSource=DefaultDataSource.build("jdbc:mysql://localhost:3306/sys", "root", "root");
+JdbcMapper mapper = JdbcMapper.build(dataSource);
+```
 
 #实体介绍
 ```
@@ -30,7 +35,7 @@ import com.di.jdbc.mapper.annotation.Table;
 public class Man {
 	@Id
 	private int id;
-	@Column(name = "")
+	@Column(name = "name")
 	private String name;
 }
 ```
