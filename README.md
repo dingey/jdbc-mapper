@@ -36,12 +36,12 @@ boolean execute(String sql)
 boolean execute(String preSql, Object...args)
 ```
 
-执行预编译的sql语句，返回list对象;
+执行sql语句，返回一条或一列，具体取决于resultClass类型;
 ```
-List<T> list(String sql, Class<T> resultClass)
+T get(String sql, Class<T> resultClass)
 ```
 
-执行sql语句，返回一条或一列;
+执行预编译sql语句，返回一条或一列，具体取决于resultClass类型;
 ```
 T get(String sql, Class<T> resultClass)
 ```
@@ -50,6 +50,17 @@ T get(String sql, Class<T> resultClass)
 ```
 Map<Object,Object> listToMap(String sql);
 ```
+
+执行预编译的sql语句，结果映射为Map,第一列为key,第二列value;
+```
+Map<Object, Object> listToMap(String sql, Object... args);
+```
+
+执行sql语句，返回list对象;
+```
+List<T> list(String sql, Class<T> resultClass)
+```
+
 执行预编译的sql语句，返回list对象，
 ```
 List<T> list(String preSql,Class<T> resultClass, Object...args)
