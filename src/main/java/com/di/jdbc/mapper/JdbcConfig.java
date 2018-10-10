@@ -1,10 +1,7 @@
 package com.di.jdbc.mapper;
 
-import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.URISyntaxException;
 import java.util.Properties;
 
 public interface JdbcConfig {
@@ -64,30 +61,27 @@ public interface JdbcConfig {
 
 	}
 
-	static JdbcConfig createDefault(String fileName) {
+	public static JdbcConfig createDefault(String fileName) {
 		Properties prop = new Properties();
-		String path = "";
+		boolean b = false;
+		Exception e = null;
 		try {
-			path = Thread.currentThread().getContextClassLoader().getResource("").toURI().getPath();
-		} catch (URISyntaxException e) {
-			e.printStackTrace();
-		}
-		path = path + fileName;
-
-		try {
-			prop.load(new FileInputStream(new File(path)));
-		} catch (FileNotFoundException e) {
-			System.err.println(path + " not found");
+			prop.load(new FileInputStream(fileName));
+		} catch (IOException e1) {
+			b = true;
+			e = e1;
 			try {
-				if (path.indexOf("test-classes") != -1) {
-					path = path.replaceFirst("test-classes", "classes");
-				}
-				prop.load(new FileInputStream(new File(path)));
-			} catch (IOException e1) {
-				System.err.println(path + " not found");
+				prop.load(Thread.currentThread().getContextClassLoader().getResourceAsStream(fileName));
+				b = false;
+			} catch (NullPointerException e2) {
+				b = true;
+			} catch (IOException e3) {
+				b = true;
+				e = e3;
 			}
-		} catch (IOException e) {
-			e.printStackTrace();
+		}
+		if (b) {
+			throw new RuntimeException(fileName + "(系统找不到指定的文件。)", e);
 		}
 		JdbcConfigImpl j = new JdbcConfigImpl();
 		j.driver = prop.getProperty("driverClassName");
@@ -97,11 +91,11 @@ public interface JdbcConfig {
 		j.initSize = Integer.valueOf(prop.getProperty("initPoolSize") == null ? "1" : prop.getProperty("initPoolSize"));
 		j.maxSize = Integer.valueOf(prop.getProperty("maxPoolSize") == null ? "10" : prop.getProperty("maxPoolSize"));
 		if (j.url == null)
-			System.err.println("url is null or not found");
+			throw new RuntimeException("url is null or not found");
 		if (j.username == null)
-			System.err.println("username is null or not found");
+			throw new RuntimeException("username is null or not found");
 		if (j.password == null)
-			System.err.println("password is null or not found");
+			throw new RuntimeException("password is null or not found");
 		return j;
 	}
 }

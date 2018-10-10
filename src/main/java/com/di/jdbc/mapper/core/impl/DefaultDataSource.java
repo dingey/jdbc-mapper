@@ -32,15 +32,15 @@ public class DefaultDataSource implements DataSource, Runnable {
 		super();
 	}
 
-	public DefaultDataSource build(String fileName) {
+	public static DefaultDataSource build(String fileName) {
 		return build(JdbcConfig.createDefault(fileName));
 	}
 
-	public DefaultDataSource build(JdbcConfig config) {
+	public static DefaultDataSource build(JdbcConfig config) {
 		return build(config.getDriverClassName(), config.getUrl(), config.getUsername(), config.getPassword(), config.getInitSize(), config.getMaxSize());
 	}
 
-	public DefaultDataSource build(Map<String, String> prop) {
+	public static DefaultDataSource build(Map<String, String> prop) {
 		return build(prop.get("driver"), prop.get("url"), prop.get("username"), prop.get("password"), prop.get("poolSize") == null ? 1 : Integer.valueOf(prop.get("poolSize")),
 				prop.get("poolSize") == null ? 10 : Integer.valueOf(prop.get("maxSize")));
 	}
