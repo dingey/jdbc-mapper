@@ -10,26 +10,26 @@ import com.di.jdbc.mapper.core.Pager;
 public class NamedMapperImpl extends PagerMapperImpl implements NamedMapper {
 
 	@Override
-	public <T> boolean executeByNamedQuery(String namedQueryName, Object[] args, Class<T> namedClass) {
+	public <T> boolean executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args) {
 		return super.execute(getNameQuery(namedQueryName, namedClass).query(), args);
 	}
 
 	@Override
-	public <T> T getByNamedQuery(String namedQueryName, Object[] args, Class<T> namedClass) {
+	public <T> T getByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args) {
 		NamedNativeQuery q = getNameQuery(namedQueryName, namedClass);
-		return super.get(q.query(), args, namedClass);
+		return super.get(q.query(), namedClass, args);
 	}
 
 	@Override
-	public <T> List<T> listByNamedQuery(String namedQueryName, Object[] args, Class<T> namedClass) {
+	public <T> List<T> listByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args) {
 		NamedNativeQuery q = getNameQuery(namedQueryName, namedClass);
-		return super.list(q.query(), args, namedClass);
+		return super.list(q.query(), namedClass, args);
 	}
 
 	@Override
-	public <T> Pager<T> pageByNamedQuery(String namedQueryName, Object[] args, int pageNum, int pageSize, Class<T> namedClass) {
+	public <T> Pager<T> pageByNamedQuery(String namedQueryName, int pageNum, int pageSize, Class<T> namedClass, Object... args) {
 		NamedNativeQuery q = getNameQuery(namedQueryName, namedClass);
-		return super.page(q.query(), args, pageNum, pageSize, namedClass);
+		return super.page(q.query(), pageNum, pageSize, namedClass, args);
 	}
 
 	private <T> NamedNativeQuery getNameQuery(String namedQueryName, Class<T> namedClass) {

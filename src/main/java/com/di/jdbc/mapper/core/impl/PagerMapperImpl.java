@@ -19,11 +19,11 @@ public class PagerMapperImpl extends ObjectMapperImpl implements PagerMapper {
 
 	@SuppressWarnings("rawtypes")
 	@Override
-	public Pager<Map> page(String preparedStatement, Object[] args, int pageNum, int pageSize) {
+	public Pager<Map> page(String preparedStatement, int pageNum, int pageSize, Object... args) {
 		String sql0 = "select count(0) " + preparedStatement.substring(preparedStatement.indexOf("from"));
 		String pageSql = PagerSqlUtil.getPreparePageSql(preparedStatement, args, pageNum, pageSize, connection());
 		args = PagerSqlUtil.getPageArgs(args);
-		List<Map> list = list(pageSql, args, Map.class);
+		List<Map> list = list(pageSql, Map.class, args);
 		return new SimplePager<Map>(pageNum, pageSize, super.get(sql0, int.class), list);
 	}
 
@@ -36,10 +36,10 @@ public class PagerMapperImpl extends ObjectMapperImpl implements PagerMapper {
 	}
 
 	@Override
-	public <T> Pager<T> page(String preparedStatement, Object[] args, int pageNum, int pageSize, Class<T> resultClass) {
+	public <T> Pager<T> page(String preparedStatement, int pageNum, int pageSize, Class<T> resultClass, Object... args) {
 		String sql0 = "select count(0) " + preparedStatement.substring(preparedStatement.indexOf("from"));
 		String pageSql = PagerSqlUtil.getPageSql(preparedStatement, pageNum, pageSize, connection());
-		List<T> list = list(pageSql, args, resultClass);
-		return new SimplePager<T>(pageNum, pageSize, super.get(sql0, args, int.class), list);
+		List<T> list = list(pageSql, resultClass, args);
+		return new SimplePager<T>(pageNum, pageSize, super.get(sql0, int.class, args), list);
 	}
 }

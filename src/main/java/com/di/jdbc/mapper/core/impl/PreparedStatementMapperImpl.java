@@ -14,7 +14,7 @@ import com.di.jdbc.mapper.core.PreparedStatementMapper;
 public class PreparedStatementMapperImpl extends StatementMapperImpl implements PreparedStatementMapper {
 
 	@Override
-	public boolean execute(String preparedStatement, Object[] args) {
+	public boolean execute(String preparedStatement, Object... args) {
 		Connection c = connection();
 		PreparedStatement ps = null;
 		try {
@@ -35,7 +35,7 @@ public class PreparedStatementMapperImpl extends StatementMapperImpl implements 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> T get(String preparedStatement, Object[] args, Class<T> resultClass) {
+	public <T> T get(String preparedStatement, Class<T> resultClass, Object... args) {
 		Connection c = connection();
 		PreparedStatement ps = null;
 		ResultSet set = null;
@@ -67,7 +67,7 @@ public class PreparedStatementMapperImpl extends StatementMapperImpl implements 
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public <T> List<T> list(String preparedStatement, Object[] args, Class<T> resultClass) {
+	public <T> List<T> list(String preparedStatement, Class<T> resultClass, Object... args) {
 		Connection c = connection();
 		PreparedStatement ps = null;
 		ResultSet set = null;
@@ -93,7 +93,7 @@ public class PreparedStatementMapperImpl extends StatementMapperImpl implements 
 	}
 
 	@Override
-	public Map<Object, Object> listToMap(String sql, Object[] args) {
+	public Map<Object, Object> listToMap(String sql, Object... args) {
 		Connection c = connection();
 		PreparedStatement ps = null;
 		ResultSet set = null;

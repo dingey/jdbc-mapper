@@ -265,8 +265,8 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 	}
 
 	@Override
-	public <T> T get(String sql, Object[] args, Class<T> resultClass) {
-		return super.get(sql, args, resultClass);
+	public <T> T get(String sql, Class<T> resultClass, Object... args) {
+		return super.get(sql, resultClass, args);
 	}
 
 	@Override
@@ -275,8 +275,8 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 	}
 
 	@Override
-	public <T> List<T> list(String preSql, Object[] args, Class<T> resultClass) {
-		return super.list(preSql, args, resultClass);
+	public <T> List<T> list(String preSql, Class<T> resultClass, Object... args) {
+		return super.list(preSql, resultClass, args);
 	}
 
 }

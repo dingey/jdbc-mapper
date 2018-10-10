@@ -49,9 +49,10 @@ public interface ObjectMapper extends PreparedStatementMapper {
 	 *
 	 * @param statement statement语句
 	 * @param resultClass 结果类
+	 * @param args 参数值
 	 * @return 单个对象
 	 */
-	<T> T get(String statement, Object[] args, Class<T> resultClass);
+	<T> T get(String statement, Class<T> resultClass, Object... args);
 
 	/**
 	 * 执行statement语句，返回多条记录。
@@ -66,9 +67,9 @@ public interface ObjectMapper extends PreparedStatementMapper {
 	 * 执行prepareStatement语句，返回多条记录。
 	 *
 	 * @param preSql 预编译的prepareStatement语句
-	 * @param args 参数
 	 * @param resultClass 结果类型
+	 * @param args 参数值
 	 * @return list对象
 	 */
-	<T> List<T> list(String prepareStatement, Object[] args, Class<T> resultClass);
+	<T> List<T> list(String prepareStatement, Class<T> resultClass, Object... args);
 }
