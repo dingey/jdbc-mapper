@@ -54,9 +54,9 @@ Map<Object,Object> listToMap(String sql);
 ```
 List<T> list(String preSql,Class<T> resultClass, Object...args)
 ```
-省略其余prepare方法……
 
-插入一条记录。
+
+插入一条记录,如果需要返回自增主键在主键属性上加@GeneratedValue注解。
 ```
 void insert(T o)
 ```
@@ -78,6 +78,7 @@ int updateSelective(T t)
 
 # 分页查询
 执行分页查询,只支持mysql,oracle。
+
 分页对象
 ```
 Pager｛
@@ -99,7 +100,7 @@ Pager<T> page(String preSql, int pageNum, int pageSize, Class<T> resultClass， 
 
 执行NamedQuery分页查询
 ```
-Pager<T> pageByNamedQuery(String namedQueryName, Object[] args, Class<T> resultClass)
+Pager<T> pageByNamedQuery(String namedQueryName,Class<T> resultClass,Object... args)
 ```
 
 # 命名查询
