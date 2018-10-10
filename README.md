@@ -1,7 +1,8 @@
 # jdbc-mapper
 基于jdbc的封装，自带连接池等。支持多数据源，配置简单，支持注解sql查询，自带分页查询。
 
-#快速开始
+# 快速开始
+
 引入依赖
 ```
 <dependency>
@@ -23,54 +24,36 @@ DataSource dataSource=DefaultDataSource.build("jdbc:mysql://localhost:3306/sys",
 JdbcMapper mapper = JdbcMapper.build(dataSource);
 ```
 
-#实体介绍
-```
-import com.di.jdbc.mapper.annotation.Column;
-import com.di.jdbc.mapper.annotation.Id;
-import com.di.jdbc.mapper.annotation.NamedNativeQueries;
-import com.di.jdbc.mapper.annotation.NamedNativeQuery;
-import com.di.jdbc.mapper.annotation.Table;
-@Table(name = "man")
-@NamedNativeQueries(@NamedNativeQuery(name = "getOne", query = "select * from man where id=?"))
-public class Man {
-	@Id
-	private int id;
-	@Column(name = "name")
-	private String name;
-}
-```
+# 方法介绍
 
-#方法介绍
+执行sql语句，返回成功或失败;
 ```
 boolean execute(String sql)
 ```
 
-执行sql语句，返回成功或失败;
+执行预编译sql语句，返回成功或失败;
 ```
-boolean execute(String preSql, Object[] args)
+boolean execute(String preSql, Object...args)
 ```
 
-执行预编译的sql语句，args参数，返回成功或失败;
+执行预编译的sql语句，返回list对象;
 ```
 List<T> list(String sql, Class<T> resultClass)
 ```
 
-执行sql语句，返回多条记录为指定类型的pojo;
+执行sql语句，返回一条或一列;
 ```
 T get(String sql, Class<T> resultClass)
 ```
 
-执行sql语句，结果映射为Map;
+执行sql语句，结果映射为Map,第一列为key,第二列value;
 ```
-T queryForSingleValue(String sql, Class<T> resultClass)
+Map<Object,Object> listToMap(String sql);
 ```
-
-执行sql语句，返回一行一列的值，通常可用来查询总数;
+执行预编译的sql语句，返回list对象，
 ```
-List<T> prepareQueryForList(String preSql, Object[] args, Class<T> resultClass)
+List<T> list(String preSql,Class<T> resultClass, Object...args)
 ```
-
-执行prepareStatement语句，返回多条记录为指定类型的pojo;
 省略其余prepare方法……
 
 插入一条记录。
@@ -78,7 +61,7 @@ List<T> prepareQueryForList(String preSql, Object[] args, Class<T> resultClass)
 void insert(T o)
 ```
 
-可选择插入一条记录。
+可选择插入一条记录，忽略null的属性。
 ```
 void insertSelective(T o)
 ```
@@ -88,41 +71,14 @@ void insertSelective(T o)
 int update(T t)
 ```
 
-可选择更新一条记录；
+可选择更新一条记录，忽略null的属性。
 ```
 int updateSelective(T t)
 ```
 
-#分页查询
+# 分页查询
 执行分页查询,只支持mysql,oracle。
-```
-Pager<T> page(String sql, int pageNum, int pageSize, Class<T> resultClass)
-```
-
-执行sql分页查询
-```
-Pager<T> page(String preSql, Object[] args, int pageNum, int pageSize, Class<T> resultClass)
-```
-
-执行NamedQuery分页查询
-```
-Pager<T> pageByNamedQuery(String namedQueryName, Object[] args, Class<T> resultClass)
-```
-
-#命名查询
-执行本地命名查询
-```
-@NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person"),
-		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
-public class Person {}
-```
-可以将sql语句写在类上，方便统一管理。
-
-
-#分页查询
-
-
-分页
+分页对象
 ```
 Pager｛
 	List<T> list;
@@ -131,8 +87,47 @@ Pager｛
 	long total;
 ｝
 ```
+执行sql分页查询
+```
+Pager<T> page(String sql, int pageNum, int pageSize, Class<T> resultClass)
+```
 
-#事务
+执行预编译sql分页查询
+```
+Pager<T> page(String preSql, int pageNum, int pageSize, Class<T> resultClass， Object...args)
+```
+
+执行NamedQuery分页查询
+```
+Pager<T> pageByNamedQuery(String namedQueryName, Object[] args, Class<T> resultClass)
+```
+
+# 命名查询
+执行本地命名查询
+```
+@NamedNativeQueries(value = { @NamedNativeQuery(name = "selectAll", query = "select * from person"),
+		@NamedNativeQuery(name = "selectOne", query = "select * from person where id<?") })
+public class Person {}
+```
+可以将sql语句写在类上，方便统一管理。
+
+执行命名语句
+```
+boolean executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args);
+```
+
+执行命名查询语句
+```
+T getByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args);
+```
+
+执行命名语句查询，返回list对象
+```
+List<T> listByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args);	
+```
+
+
+# 事务
 ```
 DataSource dataSource=DefaultDataSource.build("jdbc:mysql://localhost:3306/sys", "root", "root");
 JdbcFactory factory = JdbcFactory.build(dataSource);
@@ -146,7 +141,7 @@ try {
 	m.setName("a");
 	mapper.update(m);
 	mapper.commit();
-} catch (SQLException e) {
+} catch (Exception e) {
 	e.printStackTrace();
 	mapper.rollback();
 }
