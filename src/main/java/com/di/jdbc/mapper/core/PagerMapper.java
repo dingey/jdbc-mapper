@@ -17,7 +17,7 @@ public interface PagerMapper extends ObjectMapper {
 	/**
 	 * 执行分页查询。
 	 *
-	 * @param statement statement语句
+	 * @param preparedStatement statement语句
 	 * @param pageNum 当前页
 	 * @param pageSize 每页大小
 	 * @param args 参数值

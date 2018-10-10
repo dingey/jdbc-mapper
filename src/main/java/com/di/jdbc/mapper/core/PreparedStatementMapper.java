@@ -16,7 +16,7 @@ public interface PreparedStatementMapper extends StatementMapper {
 	/**
 	 * 执行sql语句，获取结果集。
 	 *
-	 * @param sql statement语句
+	 * @param preparedStatement statement语句
 	 * @param resultClass 结果类型
 	 * @param args 参数值
 	 * @return 一行几率
@@ -26,7 +26,7 @@ public interface PreparedStatementMapper extends StatementMapper {
 	/**
 	 * 执行sql语句，批量获取结果集。
 	 *
-	 * @param sql statement语句
+	 * @param preparedStatement statement语句
 	 * @param resultClass 结果类型
 	 * @param args 参数值
 	 * @return list对象

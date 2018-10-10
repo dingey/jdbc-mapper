@@ -27,7 +27,7 @@ public interface NamedMapper extends PagerMapper {
 	 * 执行命名查询
 	 *
 	 * @param namedQueryName 本地查询名称
-	 * @param resultClass 结果类
+	 * @param namedClass 结果类
 	 * @param args 参数值
 	 * @return 分页数据
 	 */
@@ -39,7 +39,7 @@ public interface NamedMapper extends PagerMapper {
 	 * @param namedQueryName 本地查询名称
 	 * @param pageNum 当前页
 	 * @param pageSize 每页大小
-	 * @param resultClass 结果类
+	 * @param namedClass 结果类
 	 * @param args 参数值
 	 * @return 分页数据
 	 */

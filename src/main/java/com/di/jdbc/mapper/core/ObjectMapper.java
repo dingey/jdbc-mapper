@@ -66,7 +66,7 @@ public interface ObjectMapper extends PreparedStatementMapper {
 	/**
 	 * 执行prepareStatement语句，返回多条记录。
 	 *
-	 * @param preSql 预编译的prepareStatement语句
+	 * @param prepareStatement 预编译的prepareStatement语句
 	 * @param resultClass 结果类型
 	 * @param args 参数值
 	 * @return list对象
