@@ -14,12 +14,12 @@ import com.di.jdbc.mapper.core.StatementMapper;
 public class StatementMapperImpl extends TransactionMapperImpl implements StatementMapper {
 
 	@Override
-	public boolean execute(String statement) {
+	public int execute(String statement) {
 		Connection c = connection();
 		Statement st = null;
 		try {
 			st = c.createStatement();
-			return st.execute(statement);
+			return st.executeUpdate(statement);
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

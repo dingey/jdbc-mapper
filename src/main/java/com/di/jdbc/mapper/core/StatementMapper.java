@@ -5,12 +5,12 @@ import java.util.Map;
 
 public interface StatementMapper extends TransactionMapper {
 	/**
-	 * 执行sql语句，返回成功或失败。
+	 * 执行sql语句，返回影响行数。
 	 *
 	 * @param statement statement语句
 	 * @return 影响的行数
 	 */
-	boolean execute(String statement);
+	int execute(String statement);
 
 	/**
 	 * 执行sql语句，获取结果集。

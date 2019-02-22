@@ -14,7 +14,7 @@ import com.di.jdbc.mapper.core.PreparedStatementMapper;
 public class PreparedStatementMapperImpl extends StatementMapperImpl implements PreparedStatementMapper {
 
 	@Override
-	public boolean execute(String preparedStatement, Object... args) {
+	public int execute(String preparedStatement, Object... args) {
 		Connection c = connection();
 		PreparedStatement ps = null;
 		try {
@@ -24,7 +24,7 @@ public class PreparedStatementMapperImpl extends StatementMapperImpl implements 
 					ps.setObject(i + 1, args[i]);
 				}
 			}
-			return ps.execute();
+			return ps.executeUpdate();
 		} catch (SQLException e) {
 			throw new RuntimeException(e);
 		} finally {

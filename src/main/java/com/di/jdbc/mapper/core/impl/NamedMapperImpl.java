@@ -10,7 +10,7 @@ import com.di.jdbc.mapper.core.Pager;
 public class NamedMapperImpl extends PagerMapperImpl implements NamedMapper {
 
 	@Override
-	public <T> boolean executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args) {
+	public <T> int executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args) {
 		return super.execute(getNameQuery(namedQueryName, namedClass).query(), args);
 	}
 

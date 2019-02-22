@@ -11,7 +11,7 @@ public interface NamedMapper extends PagerMapper {
 	 * @param args 参数值
 	 * @return 执行状态
 	 */
-	<T> boolean executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args);
+	<T> int executeByNamedQuery(String namedQueryName, Class<T> namedClass, Object... args);
 
 	/**
 	 * 执行命名查询

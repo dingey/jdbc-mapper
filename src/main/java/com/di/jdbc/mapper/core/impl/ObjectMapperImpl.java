@@ -74,7 +74,7 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 				for (int i = 0; i < args.size(); i++) {
 					ps.setObject(i + 1, args.get(i));
 				}
-				return ps.execute() ? 1 : 0;
+				return ps.executeUpdate();
 			}
 		} catch (SQLException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new RuntimeException(sql.toString(), e);
@@ -142,7 +142,7 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 				for (int i = 0; i < args.size(); i++) {
 					ps.setObject(i + 1, args.get(i));
 				}
-				return ps.execute() ? 1 : 0;
+				return ps.executeUpdate();
 			}
 		} catch (SQLException | IllegalAccessException | IllegalArgumentException | InvocationTargetException e) {
 			throw new RuntimeException(sql.toString(), e);
@@ -195,7 +195,7 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 			for (int i = 0; i < args.size(); i++) {
 				ps.setObject(i + 1, args.get(i));
 			}
-			return ps.execute() ? 1 : 0;
+			return ps.executeUpdate();
 		} catch (SQLException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(sql.toString(), e);
 		} finally {
@@ -250,7 +250,7 @@ public class ObjectMapperImpl extends PreparedStatementMapperImpl implements Obj
 			for (int i = 0; i < args.size(); i++) {
 				ps.setObject(i + 1, args.get(i));
 			}
-			return ps.execute() ? 1 : 0;
+			return ps.executeUpdate();
 		} catch (SQLException | IllegalArgumentException | IllegalAccessException | InvocationTargetException e) {
 			throw new RuntimeException(sql.toString(), e);
 		} finally {

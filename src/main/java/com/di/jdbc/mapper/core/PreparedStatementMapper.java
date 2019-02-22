@@ -11,7 +11,7 @@ public interface PreparedStatementMapper extends StatementMapper {
 	 * @param args 参数值
 	 * @return 影响的行数
 	 */
-	boolean execute(String preparedStatement, Object... args);
+	int execute(String preparedStatement, Object... args);
 
 	/**
 	 * 执行sql语句，获取结果集。
