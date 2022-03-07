@@ -1,5 +1,5 @@
 # jdbc-mapper
-基于jdbc的封装，支持数据源，配置简单，支持注解sql查询，自带分页查询。
+基于jdbc的封装，支持数据源，配置简单，支持注解sql查询，自带分页查询。已停止维护，推荐使用mybatis及其扩展 https://github.com/dingey/mybatis-mapper
 
 # 快速开始
 
